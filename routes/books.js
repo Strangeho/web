@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET posts page. */
 router.get('/', function(req, res, next) {
-  res.render('books', { title: '도서 관리', name:'홍길동' });
+  res.render('index', { title: '도서검색', pageName:'books/search.ejs' });
 });
 
 module.exports = router;
