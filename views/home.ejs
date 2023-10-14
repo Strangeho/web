@@ -1,3 +1,13 @@
+<style>
+    #div_books img,
+    #div_books .bi-cart-check {
+        cursor: pointer;
+    }
+    #div_books .bi-cart-check {
+        color: green;
+        font-size: 1.5rem;
+    }
+</style>
 <div class="row my-5">
     <div class="col my-5">
         <!-- 검색폼 -->
@@ -25,14 +35,16 @@
         <div class="col col-6 col-md-4 col-lg-2 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <img src="{{check thumbnail}}" width="90%" style="margin:0 auto; display:block">
+                    <img src="{{check thumbnail}}" width="90%" style="margin:0 auto; display:block" index="{{@index}}">
                     <div class="ellipsis pt-3" style="form-size:0.8rem">{{title}}</div>
                 </div>
                 <div class="card-footer" style="font-size:0.8rem">
                     {{format price}}
+                    <i class="bi bi-cart-check float-end" book="{{book @this}}"></i>
                 </div>
             </div>
         </div>
+        <%-include('books/modal.ejs')%>
     {{/each}}
 </script>
 <script>
@@ -47,6 +59,10 @@
     Handlebars.registerHelper("format", function(price){
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
     });
+
+    Handlebars.registerHelper("book", function(book){
+        return JSON.stringify(book); // object => string
+    });
 </script>
 
 <script>
@@ -59,6 +75,23 @@
         query=$(frm.query).val();
         page=1;
         getBooks();
+    });
+
+    // 장바구니 클릭 시
+    $("#div_books").on('click', '.bi-cart-check', function(){
+        if(!sessionStorage.getItem("uid")){
+            location.href='/users/login';
+        } else {
+            // 장바구니에 등록
+            const book = JSON.parse($(this).attr("book"));
+            console.log(book);
+        }
+    });
+
+    // img click(modal)
+    $("#div_books").on('click', 'img', function(){
+        let index = $(this).attr("index");
+        $("#modal" + index).modal("show");
     });
 
     // 이전 버튼 클릭
@@ -83,6 +116,7 @@
                 console.log(result);
                 let temp = Handlebars.compile($("#temp_books").html());
                 $("#div_books").html(temp(result));
+
                 let last = Math.ceil(result.meta.pageable_count/6);
                 $("#span_page").html(page + "/" + last);
 

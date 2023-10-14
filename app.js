@@ -21,10 +21,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// routes 파일 등록
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
 app.use('/books', booksRouter);
+app.use('/locals', require('./routes/locals'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

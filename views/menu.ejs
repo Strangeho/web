@@ -5,16 +5,44 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/books">도서검색</a>
                 </li>
             </ul>
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/login">로그인</a>
+                <a class="nav-link active" aria-current="page" href="/locals">지역검색</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li id="login" class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/users/login">로그인</a>
+                </li>
+                <li id="email" class="nav-item" style="display:none;">
+                    <a class="nav-link active" aria-current="page">email</a>
+                </li>
+                <li id="logout" class="nav-item" style="display:none; cursor:pointer;">
+                    <a class="nav-link active" aria-current="page">logout</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<script>
+    if(sessionStorage.getItem("uid")){
+        $("#login, #email, #logout").toggle();
+        $("#email a").html(sessionStorage.getItem("email"));
+    }
+
+    // logout
+    $("#logout").on('click', 'a', function(e){
+        e.preventDefault();
+
+        if(confirm("do you want to logout seriusly?")){
+            sessionStorage.clear();
+            location.href='/';
+        }
+    });
+</script>
