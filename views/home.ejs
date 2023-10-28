@@ -100,6 +100,7 @@
         }
 
         // 장바구니에 있는지 체크
+        const userID = sessionStorage.getItem("uid");
         const book=JSON.parse($(this).attr("book"));
 
         // console.log(book);
